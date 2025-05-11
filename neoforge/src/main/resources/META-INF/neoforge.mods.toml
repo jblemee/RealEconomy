@@ -1,0 +1,26 @@
+modLoader="javafml" #mandatory
+loaderVersion="[1,)"
+license="GPL-3.0-only"
+issueTrackerURL="https://github.com/jblemee/RealEconomy/issues"
+
+[[mods]]
+modId="realeconomy"
+version="${version}"
+displayName="RealEconomy"
+authors="bencrow11, Jean-Baptiste Lemée"
+description="Create central bank, bank, currency and use it ingame"
+#logoFile="icon.png"
+
+[[dependencies.realeconomy]]
+    modId="neoforge"
+    type="required"
+    versionRange="[21.1.1,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.realeconomy]]
+    modId="minecraft"
+    type="required"
+    versionRange="[1.21,)"
+    ordering="NONE"
+    side="BOTH"

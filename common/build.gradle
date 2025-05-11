@@ -1,3 +1,7 @@
+architectury {
+    common rootProject.enabled_platforms.split(',')
+}
+
 dependencies {
     // We depend on fabric loader here to use the fabric @Environment annotations and get the mixin dependencies
     // Do NOT use other classes from fabric loader
@@ -5,14 +9,12 @@ dependencies {
     compileOnly "net.luckperms:api:5.4"
 }
 
-architectury {
-    common()
-}
+
 
 publishing {
     publications {
         mavenCommon(MavenPublication) {
-            artifactId = rootProject.archives_base_name
+            artifactId = rootProject.archives_name
             from components.java
         }
     }
