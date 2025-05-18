@@ -38,7 +38,7 @@ dependencies {
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
     shadowBundle project(path: ':common', configuration: 'transformProductionFabric')
 
-    modImplementation include("eu.pb4:placeholder-api:2.5.2+1.21.3")
+    modImplementation include("eu.pb4:placeholder-api:2.4.2+1.21")
 }
 
 processResources {
