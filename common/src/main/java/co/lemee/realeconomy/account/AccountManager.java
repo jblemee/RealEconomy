@@ -35,12 +35,7 @@ public abstract class AccountManager {
      * @return true if the player has an account.
      */
     public static boolean hasAccount(String username) {
-        for (String name : accounts.keySet()) {
-            if (name.equalsIgnoreCase(username)) {
-                return true;
-            }
-        }
-        return false;
+        return accounts.containsKey(username.toLowerCase());
     }
 
     /**
@@ -61,12 +56,7 @@ public abstract class AccountManager {
      * @return the account of the player requested.
      */
     public static Account getAccount(String username) {
-        for (String name : accounts.keySet()) {
-            if (name.equalsIgnoreCase(username)) {
-                return accounts.get(name);
-            }
-        }
-        return null;
+        return accounts.get(username.toLowerCase());
     }
 
     /**
@@ -96,15 +86,34 @@ public abstract class AccountManager {
      * @return true if the account was successfully updated.
      */
     public static boolean updateAccount(Account account) {
-        Account oldAccount = accounts.get(account.getUsername());
-        accounts.remove(account.getUsername());
-        accounts.put(account.getUsername(), account);
+        // Find the existing key case-insensitively for removal
+        String oldKey = null;
+        for (String key : accounts.keySet()) {
+            if (key.equalsIgnoreCase(account.getUsername())) {
+                oldKey = key;
+                break;
+            }
+        }
+
+        Account oldAccount = null;
+        if (oldKey != null) {
+            oldAccount = accounts.remove(oldKey);
+        }
+        
+        // If oldAccount is null and we are trying to update, it might be a new account or a name change scenario.
+        // For a name change, the UUID would match. Let's assume 'account' has the new username.
+        // We'll put the account with the new username, lowercased.
+
+        accounts.put(account.getUsername().toLowerCase(), account);
         Gson gson = Utils.newGson();
         boolean success = Utils.writeFileAsync("accounts/", account.getUUID().toString() + ".json",
                 gson.toJson(new AccountFile(account)));
         if (!success) {
-            accounts.remove(account.getUsername());
-            accounts.put(account.getUsername(), oldAccount);
+            // Rollback
+            accounts.remove(account.getUsername().toLowerCase());
+            if (oldAccount != null && oldKey != null) { // If we successfully removed an old entry
+                accounts.put(oldKey, oldAccount);
+            }
             ErrorManager.addError("Failed to write account to storage for account: " + account.getUsername());
             RealEconomy.LOGGER.error("Failed to write account to storage for account: " + account.getUsername());
             return false;
@@ -120,11 +129,14 @@ public abstract class AccountManager {
      * @return the create account.
      */
     public static boolean createAccount(UUID uuid, String username) {
-        accounts.put(username, new Account(uuid, username));
+        String lowerCaseUsername = username.toLowerCase();
+        accounts.put(lowerCaseUsername, new Account(uuid, username)); // Store original case username in Account object
         Gson gson = Utils.newGson();
-        boolean success = Utils.writeFileAsync("accounts/", getAccount(username).getUUID().toString() + ".json",
-                gson.toJson(new AccountFile(accounts.get(username))));
+        // Use the username from the account object for AccountFile, which might have original casing
+        boolean success = Utils.writeFileAsync("accounts/", getAccount(lowerCaseUsername).getUUID().toString() + ".json",
+                gson.toJson(new AccountFile(accounts.get(lowerCaseUsername))));
         if (!success) {
+            accounts.remove(lowerCaseUsername);
             ErrorManager.addError("Failed to write account to storage for account: " + username);
             RealEconomy.LOGGER.error("Failed to write account to storage for account: " + username);
             return false;
@@ -158,7 +170,7 @@ public abstract class AccountManager {
             String[] list = dir.list();
 
             // If no files, return.
-            if (list.length == 0) {
+            if (list == null || list.length == 0) { // Added null check for list
                 return;
             }
 
@@ -168,11 +180,13 @@ public abstract class AccountManager {
                     Gson gson = Utils.newGson();
                     AccountFile accountFile = gson.fromJson(el, AccountFile.class);
                     // Add the account to accounts hashmap.
-                    accounts.put(accountFile.getUsername(), new Account(accountFile));
+                    // Use toLowerCase for the key, but Account object stores original username from file
+                    accounts.put(accountFile.getUsername().toLowerCase(), new Account(accountFile));
                 }));
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            // It's good practice to log the exception or handle it more gracefully
+            RealEconomy.LOGGER.error("Error during AccountManager initialisation: ", e);
         }
     }
 }

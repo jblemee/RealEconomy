@@ -1,11 +1,11 @@
 plugins {
-    id 'dev.architectury.loom' version '1.10-SNAPSHOT' apply false
+    id 'dev.architectury.loom' version '1.7-SNAPSHOT' apply false
     id 'architectury-plugin' version '3.4-SNAPSHOT'
     id 'com.github.johnrengelman.shadow' version '8.1.1' apply false
 }
 
 architectury {
-    minecraft = rootProject.minecraft_version
+    minecraft = project.minecraft_version
 }
 
 allprojects {
@@ -33,7 +33,6 @@ subprojects {
     dependencies {
         minecraft "net.minecraft:minecraft:$rootProject.minecraft_version"
         mappings loom.officialMojangMappings()
-//      mappings "net.fabricmc:yarn:${yarnVersion}:v2"
     }
 
     java {

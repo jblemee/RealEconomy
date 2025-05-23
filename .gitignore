@@ -115,3 +115,25 @@ run/
 
 # Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
 !gradle-wrapper.jar
+
+# Gradle
+.gradle/
+build/
+*/build/
+
+# IDE files
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+local.properties
+
+# Build outputs
+output/
+*.jar
+*.log
+
+# OS generated files
+*~
+*.swp

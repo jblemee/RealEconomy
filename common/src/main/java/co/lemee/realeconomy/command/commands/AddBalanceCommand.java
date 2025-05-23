@@ -48,7 +48,7 @@ public class AddBalanceCommand implements SubCommandInterface {
 //							for (String name : ctx.getSource().getOnlinePlayerNames()) {
 //								builder.suggest(name);
 //							}
-//							return builder.buildFuture();
+//						 return builder.buildFuture();
 //						})
                         .executes(this::showUsage)
                         .then(Commands.argument("currency", StringArgumentType.string())
@@ -93,9 +93,9 @@ public class AddBalanceCommand implements SubCommandInterface {
         List<ServerPlayer> playerArguments;
         try {
             playerArguments = EntityArgument.getPlayers(context, "player").stream().toList();
-            playerArguments.forEach(player -> pay(context, playerSource, isPlayer, player.getDisplayName().getString()));
+            playerArguments.forEach(player -> pay(context, playerSource, isPlayer, player.getGameProfile().getName())); // Changed from getDisplayName().getString()
         } catch (CommandSyntaxException ex) {
-            String playerArg = context.getInput().split(" ")[1];
+            String playerArg = context.getInput().split(" ")[2]; // Changed from 1 to 2
             pay(context, playerSource, isPlayer, playerArg);
         }
 

@@ -1,3 +1,7 @@
+Original Mod Made by jblemee
+
+https://github.com/jblemee/RealEconomy
+
 
 # RealEconomy
 
