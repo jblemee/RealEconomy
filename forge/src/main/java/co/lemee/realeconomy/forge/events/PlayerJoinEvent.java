@@ -15,7 +15,7 @@ import co.lemee.realeconomy.ErrorManager;
 import co.lemee.realeconomy.events.PlayerJoinHandler;
 import co.lemee.realeconomy.permission.PermissionManager;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.eventbus.api.listener.SubscribeEvent;
 
 /**
  * Class to hold the event listener for when a player joins the server.

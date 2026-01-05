@@ -16,7 +16,7 @@ import co.lemee.realeconomy.command.commands.BalCommand;
 import co.lemee.realeconomy.command.commands.BalTopCommand;
 import co.lemee.realeconomy.command.commands.PayCommand;
 import net.minecraftforge.event.RegisterCommandsEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.eventbus.api.listener.SubscribeEvent;
 
 /**
  * Class to register commands for forge.
