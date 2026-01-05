@@ -83,9 +83,9 @@ public class ClearBalanceCommand implements SubCommandInterface {
         List<ServerPlayer> playerArguments;
         try {
             playerArguments = EntityArgument.getPlayers(context, "player").stream().toList();
-            playerArguments.forEach(player -> pay(context, playerSource, isPlayer, player.getDisplayName().getString()));
+            playerArguments.forEach(player -> pay(context, playerSource, isPlayer, player.getGameProfile().getName()));
         } catch (CommandSyntaxException ex) {
-            String playerArg = context.getInput().split(" ")[1];
+            String playerArg = context.getInput().split("\\s+")[2];
             pay(context, playerSource, isPlayer, playerArg);
         }
 
