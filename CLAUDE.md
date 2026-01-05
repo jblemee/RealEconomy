@@ -127,6 +127,35 @@ Also available on [Modrinth](https://modrinth.com/mod/realeconomy/versions?g=MC_
 
 Replace `MC_VERSION` with Minecraft version (e.g., `1.21.8`), `VERSION` with full version (e.g., `0.1.1+1.21.8`), and `BRANCH_NAME` with the release branch.
 
+## Publishing to CurseForge
+
+The CurseForge API key and project ID are stored in `.env`. Project ID: `1263401`
+
+Game version IDs (find new ones via `https://minecraft.curseforge.com/api/game/versions`):
+- **Loaders**: Fabric=`7499`, Forge=`7498`, NeoForge=`10150`
+- **Minecraft versions**: check API for current IDs (e.g., 1.21.8=`13620`)
+
+```bash
+# Load API key
+source .env
+
+# Publish Fabric version
+curl -X POST "https://minecraft.curseforge.com/api/projects/$CURSEFORGE_PROJECT_ID/upload-file" \
+  -H "X-Api-Token: $CURSEFORGE_API_KEY" \
+  -F 'metadata={
+    "changelog": "Changelog here",
+    "changelogType": "markdown",
+    "displayName": "Real Economy VERSION-fabric",
+    "gameVersions": [MC_VERSION_ID, 7499],
+    "releaseType": "release"
+  }' \
+  -F "file=@output/realeconomy-VERSION-fabric.jar"
+
+# Repeat for forge (7498) and neoforge (10150)
+```
+
+Replace `VERSION` with full version, `MC_VERSION_ID` with the numeric Minecraft version ID from the API.
+
 ## Commit/PR Guidelines
 
 - Do not mention Claude Code or AI assistance in commit messages or PR descriptions
