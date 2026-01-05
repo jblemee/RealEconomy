@@ -4,7 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-RealEconomy is a Minecraft server-side economy mod supporting multiple currencies for Fabric, Forge, and NeoForge on Minecraft 1.21.4. It's a fork of the MultiEconomy mod.
+RealEconomy is a Minecraft server-side economy mod supporting multiple currencies for Fabric, Forge, and NeoForge. It's a fork of the MultiEconomy mod.
+
+**Current version**: Minecraft 1.21.10 (branch `1.21.10`)
 
 ## Build Commands
 
@@ -155,6 +157,30 @@ curl -X POST "https://minecraft.curseforge.com/api/projects/$CURSEFORGE_PROJECT_
 ```
 
 Replace `VERSION` with full version, `MC_VERSION_ID` with the numeric Minecraft version ID from the API.
+
+## Porting to New Minecraft Versions
+
+When porting to a new Minecraft version:
+
+1. **Create a new branch** from the latest version branch (e.g., `git checkout -b 1.21.11`)
+
+2. **Update `gradle.properties`**:
+   - `minecraft_version`
+   - `yarnVersion` (check https://meta.fabricmc.net/v2/versions/yarn)
+   - `fabric_loader_version` (check https://fabricmc.net/)
+   - `fabric_api_version` (check https://modrinth.com/mod/fabric-api)
+   - `forge_version` (check https://files.minecraftforge.net/)
+   - `neoforge_version` (check https://maven.neoforged.net/releases/net/neoforged/neoforge/maven-metadata.xml)
+
+3. **Update version ranges** in mod metadata files:
+   - `fabric/src/main/resources/fabric.mod.json` - update `fabricloader` and `minecraft`
+   - `forge/src/main/resources/META-INF/mods.toml` - update `loaderVersion` and `versionRange` for forge/minecraft
+   - `neoforge/src/main/resources/META-INF/neoforge.mods.toml` - update `versionRange` for neoforge/minecraft
+
+4. **Check for API breaking changes**. Known changes:
+   - **1.21.10+**: `GameProfile` is now a Java record, use `profile.name()` instead of `profile.getName()`
+
+5. **Build and test**: `./gradlew build`
 
 ## Commit/PR Guidelines
 

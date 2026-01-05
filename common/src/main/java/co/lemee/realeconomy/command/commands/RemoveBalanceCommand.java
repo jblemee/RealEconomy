@@ -93,7 +93,7 @@ public class RemoveBalanceCommand implements SubCommandInterface {
         List<ServerPlayer> playerArguments;
         try {
             playerArguments = EntityArgument.getPlayers(context, "player").stream().toList();
-            playerArguments.forEach(player -> pay(context, playerSource, isPlayer, player.getGameProfile().getName()));
+            playerArguments.forEach(player -> pay(context, playerSource, isPlayer, player.getGameProfile().name()));
         } catch (CommandSyntaxException ex) {
             String playerArg = context.getInput().split("\\s+")[2];
             pay(context, playerSource, isPlayer, playerArg);
