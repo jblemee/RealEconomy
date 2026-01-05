@@ -101,6 +101,32 @@ curl -X POST "https://api.modrinth.com/v2/version" \
 
 Replace `VERSION` with the version (e.g., `0.1.1+1.21.8`) and `MC_VERSION` with Minecraft version.
 
+## GitHub Releases
+
+Create a GitHub release with the build artifacts:
+
+```bash
+gh release create vMC_VERSION \
+  --title "vMC_VERSION" \
+  --notes "## Port to Minecraft MC_VERSION
+
+### Changes
+- List changes here
+
+### Downloads
+- **Fabric**: \`realeconomy-VERSION-fabric.jar\`
+- **Forge**: \`realeconomy-VERSION-minecraftforge.jar\`
+- **NeoForge**: \`realeconomy-VERSION-neoforge.jar\`
+
+Also available on [Modrinth](https://modrinth.com/mod/realeconomy/versions?g=MC_VERSION)" \
+  --target BRANCH_NAME \
+  output/realeconomy-VERSION-fabric.jar \
+  output/realeconomy-VERSION-minecraftforge.jar \
+  output/realeconomy-VERSION-neoforge.jar
+```
+
+Replace `MC_VERSION` with Minecraft version (e.g., `1.21.8`), `VERSION` with full version (e.g., `0.1.1+1.21.8`), and `BRANCH_NAME` with the release branch.
+
 ## Commit/PR Guidelines
 
 - Do not mention Claude Code or AI assistance in commit messages or PR descriptions
