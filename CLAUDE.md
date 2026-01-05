@@ -68,6 +68,39 @@ Commands use Brigadier with base command `/realeconomy` (aliases: `/realeco`, `/
 - **Placeholder API** - Fabric only, for placeholder support
 - Uses official Mojang mappings
 
+## Publishing to Modrinth
+
+The Modrinth API key is stored in `.env` (not versioned). Project ID: `7Aa1dFtb`
+
+To publish a new version, create one version per loader (fabric, forge, neoforge):
+
+```bash
+# Load API key
+source .env
+
+# Publish Fabric version
+curl -X POST "https://api.modrinth.com/v2/version" \
+  -H "Authorization: $MODRINTH_API_KEY" \
+  -F 'data={
+    "name": "Real Economy VERSION-fabric",
+    "version_number": "VERSION-fabric",
+    "changelog": "Changelog here",
+    "dependencies": [],
+    "game_versions": ["MC_VERSION"],
+    "version_type": "release",
+    "loaders": ["fabric"],
+    "featured": true,
+    "status": "listed",
+    "project_id": "7Aa1dFtb",
+    "file_parts": ["file"]
+  }' \
+  -F "file=@output/realeconomy-VERSION-fabric.jar"
+
+# Repeat for forge (loaders: ["forge"]) and neoforge (loaders: ["neoforge"])
+```
+
+Replace `VERSION` with the version (e.g., `0.1.1+1.21.8`) and `MC_VERSION` with Minecraft version.
+
 ## Commit/PR Guidelines
 
 - Do not mention Claude Code or AI assistance in commit messages or PR descriptions
